@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Проект "Комменты"</title>
+    <meta charset="utf-8" />
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+
+  <body>
+    <div class="container" >
+      <ul class="comments" id="list">
+        <!-- рендерится из JS -->
+      </ul>
+      <div class="add-form">
+        <div class="add-form-comment" id="comment-data">
+        </div>
+        <input
+          type="text"
+          class="add-form-name"
+          placeholder="Введите ваше имя"
+          id="name-input"
+        />
+        <textarea
+          type="textarea"
+          class="add-form-text"
+          placeholder="Введите ваш коментарий"
+          rows="4"
+          id="text-input"
+        ></textarea>
+        <div class="add-form-row">
+          <button class="add-form-button" id="add-button">Написать</button>
+        </div>
+      </div>
+    </div>
+  </body>
+
+  <script>
+    "use strict";
+    let day = new Date().toLocaleDateString();
+    let time = new Date().toLocaleTimeString().slice(0,-3);
+    let period = `${day} ${time}`;
+    const buttonElement = document.getElementById("add-button");
+    const listElement = document.getElementById("list");
+    const nameInputElement = document.getElementById("name-input");
+    const textInputElement = document.getElementById("text-input");
+    const likeElements = document.querySelectorAll(".likes");
+    const commentElement = document.getElementById("comment-data")
+
+    const posts = [
+      {
+        name: "Глеб Фокин",
+        date: "12.02.22 12:18",
+        text: "Это будет первый комментарий на этой странице",
+        like: 3,
+        isLiked: false,
+        commentName: "",
+        comment: "",
+      },
+      {
+        name: "Глеб Фокин",
+        date: "13.02.22 19.22",
+        text: "Мне нравится как оформлена эта страница! ❤",
+        like: 75,
+        isLiked: true,
+        commentName: "",
+        comment: "",
+      },
+    ];
+
+    const initEventListeners = () => {
+      const buttonElements = document.querySelectorAll(".like-button");
+
+      for(const buttonElement of buttonElements) {
+        buttonElement.addEventListener('click', (event) => {
+        event.stopPropagation();
+        // номер объекта в массиве, получчаем из дата-атрибута по кнопки
+        const index = buttonElement.dataset.index;
+        // обращаемся к свойству из объекта который в массиве, по индексу
+        if (posts[index].isLiked) {
+          posts[index].isLiked = false;
+          posts[index].like--;
+        } else {
+          posts[index].isLiked = true;
+          posts[index].like++;
+        }
+
+        renderComments();
+        });
+      };
+
+      const postElements = document.querySelectorAll(".comment");
+
+      for(const postElement of postElements) {
+        postElement.addEventListener('click', () => {
+          commentElement.dataset.name = postElement.dataset.name;
+          commentElement.dataset.comment = postElement.dataset.comment;
+          commentElement.innerHTML = `<span><h2>"${postElement.dataset.name} </span><br/><span> ${postElement.dataset.comment}" </h2></span>`;
+          commentElement.style.display = 'block';
+        });
+      };
+    };
+
+    initEventListeners();
+
+    const renderComments = () => {
+      const commentsHTML = posts.map((comment, index) => {
+        return `<li class="comment" data-comment="${comment.text}" data-name="${comment.name}">
+            <div class="comment-header">
+              <div>${comment.name}</div>
+              <div>${comment.date}</div>
+            </div>
+            <div class="comment-body">
+              <div class="comment-text">
+                ${comment.commentName ? `<span>"${comment.commentName} </span><br/><span> ${comment.comment}"</span>` : ''}
+                ${comment.text}
+              </div>
+            </div>
+            <div class="comment-footer" >
+              <div class="likes">
+                <span class="likes-counter">${comment.like}</span>
+                <button class="like-button ${comment.isLiked ? '-active-like': ''}" data-index="${index}"></button>
+              </div>
+            </div>
+          </li>`
+      }).join("");
+
+      listElement.innerHTML = commentsHTML;
+
+      nameInputElement.value = "";
+      textInputElement.value = "";
+      commentElement.dataset.name = "";
+      commentElement.dataset.comment = "";
+      commentElement.innerHTML = "";
+      initEventListeners();
+    };
+
+    renderComments();
+
+    buttonElement.addEventListener("click", () => {
+      nameInputElement.classList.remove('color-error');
+      textInputElement.classList.remove('color-error');
+
+      if (nameInputElement.value === ""){
+        nameInputElement.classList.add('color-error');
+        return;
+      }
+
+      if (textInputElement.value === ""){
+        textInputElement.classList.add('color-error');
+        return;
+      }
+  
+      posts.push({
+        name: nameInputElement.value.replaceAll("<", "&lt;").replaceAll(">", "&gt;"),
+        date: period, 
+        text: textInputElement.value.replaceAll("<", "&lt;").replaceAll(">", "&gt; "),
+        like: 0,
+        isLike: false,
+        commentName: commentElement.dataset.name,
+        comment: commentElement.dataset.comment,
+      });
+      
+      renderComments(); 
+});
+    console.log("It works!");
+  </script>
+</html>
