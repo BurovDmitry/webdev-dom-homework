@@ -94,7 +94,7 @@
         postElement.addEventListener('click', () => {
           commentElement.dataset.name = postElement.dataset.name;
           commentElement.dataset.comment = postElement.dataset.comment;
-          commentElement.innerHTML = `<span><h2>"${postElement.dataset.name} </span><br/><span> ${postElement.dataset.comment}" </h2></span>`;
+          textInputElement.value = `"${postElement.dataset.name} ${postElement.dataset.comment}",`;
           commentElement.style.display = 'block';
         });
       };
@@ -111,8 +111,7 @@
             </div>
             <div class="comment-body">
               <div class="comment-text">
-                ${comment.commentName ? `<span>"${comment.commentName} </span><br/><span> ${comment.comment}"</span>` : ''}
-                ${comment.text}
+                ${comment.text} 
               </div>
             </div>
             <div class="comment-footer" >
