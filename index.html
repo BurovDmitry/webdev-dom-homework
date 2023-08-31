@@ -12,6 +12,8 @@
         <!-- рендерится из JS -->
       </ul>
       <div class="add-form">
+        <div class="add-form-comment" id="comment-data">
+        </div>
         <input
           type="text"
           class="add-form-name"
@@ -42,15 +44,17 @@
     const nameInputElement = document.getElementById("name-input");
     const textInputElement = document.getElementById("text-input");
     const likeElements = document.querySelectorAll(".likes");
+    const commentElement = document.getElementById("comment-data")
 
-    
-    const comments = [
+    const posts = [
       {
         name: "Глеб Фокин",
         date: "12.02.22 12:18",
         text: "Это будет первый комментарий на этой странице",
         like: 3,
         isLiked: false,
+        commentName: "",
+        comment: "",
       },
       {
         name: "Глеб Фокин",
@@ -58,6 +62,8 @@
         text: "Мне нравится как оформлена эта страница! ❤",
         like: 75,
         isLiked: true,
+        commentName: "",
+        comment: "",
       },
     ];
 
@@ -65,19 +71,31 @@
       const buttonElements = document.querySelectorAll(".like-button");
 
       for(const buttonElement of buttonElements) {
-        buttonElement.addEventListener('click', () => {
+        buttonElement.addEventListener('click', (event) => {
+        event.stopPropagation();
         // номер объекта в массиве, получчаем из дата-атрибута по кнопки
         const index = buttonElement.dataset.index;
         // обращаемся к свойству из объекта который в массиве, по индексу
-        if (comments[index].isLiked) {
-          comments[index].isLiked = false;
-          comments[index].like--;
+        if (posts[index].isLiked) {
+          posts[index].isLiked = false;
+          posts[index].like--;
         } else {
-          comments[index].isLiked = true;
-          comments[index].like++;
+          posts[index].isLiked = true;
+          posts[index].like++;
         }
 
         renderComments();
+        });
+      };
+
+      const postElements = document.querySelectorAll(".comment");
+
+      for(const postElement of postElements) {
+        postElement.addEventListener('click', () => {
+          commentElement.dataset.name = postElement.dataset.name;
+          commentElement.dataset.comment = postElement.dataset.comment;
+          textInputElement.value = `"${postElement.dataset.name} ${postElement.dataset.comment}",`;
+          commentElement.style.display = 'block';
         });
       };
     };
@@ -85,15 +103,15 @@
     initEventListeners();
 
     const renderComments = () => {
-      const commentsHTML = comments.map((comment, index) => {
-        return `<li class="comment">
+      const commentsHTML = posts.map((comment, index) => {
+        return `<li class="comment" data-comment="${comment.text}" data-name="${comment.name}">
             <div class="comment-header">
               <div>${comment.name}</div>
               <div>${comment.date}</div>
             </div>
             <div class="comment-body">
               <div class="comment-text">
-                ${comment.text}
+                ${comment.text} 
               </div>
             </div>
             <div class="comment-footer" >
@@ -109,32 +127,36 @@
 
       nameInputElement.value = "";
       textInputElement.value = "";
-
+      commentElement.dataset.name = "";
+      commentElement.dataset.comment = "";
+      commentElement.innerHTML = "";
       initEventListeners();
     };
 
     renderComments();
 
     buttonElement.addEventListener("click", () => {
-      nameInputElement.classList.remove('color-error')
-      textInputElement.classList.remove('color-error')
+      nameInputElement.classList.remove('color-error');
+      textInputElement.classList.remove('color-error');
 
       if (nameInputElement.value === ""){
-        nameInputElement.classList.add('color-error')
+        nameInputElement.classList.add('color-error');
         return;
       }
 
       if (textInputElement.value === ""){
-        textInputElement.classList.add('color-error')
+        textInputElement.classList.add('color-error');
         return;
       }
   
-      comments.push({
-        name: nameInputElement.value,
+      posts.push({
+        name: nameInputElement.value.replaceAll("<", "&lt;").replaceAll(">", "&gt;"),
         date: period, 
-        text: textInputElement.value,
+        text: textInputElement.value.replaceAll("<", "&lt;").replaceAll(">", "&gt; "),
         like: 0,
         isLike: false,
+        commentName: commentElement.dataset.name,
+        comment: commentElement.dataset.comment,
       });
       
       renderComments(); 
