@@ -8,6 +8,9 @@
 
   <body>
     <div class="container">
+      <div class="load-ind" id="loading-indicator">
+        <h1>Данные загружаются...</h1>
+      </div>
       <ul class="comments" id="list">
         <!-- рендерится из JS -->
       </ul>
@@ -39,13 +42,17 @@
     const nameInputElement = document.getElementById("name-input");
     const textInputElement = document.getElementById("text-input");
     const likeElements = document.querySelectorAll(".likes");
+    const loadingIndicator = document.getElementById("loading-indicator");
     let posts = [];
 
-    const fetchPromise = () =>
+    const fetchPromise = () => {
+      loadingIndicator.style.display = "block";
+    }
       fetch("https://wedev-api.sky.pro/api/v1/dima-burov/comments", {
         method: "GET",
       }).then((response) => {
         response.json().then((responseData) => {
+          loadingIndicator.style.display = "none";
           console.log(responseData);
 
           const appComments = responseData.comments.map((comment) => {
@@ -155,6 +162,8 @@
         return;
       }
 
+      buttonElement.disabled = true;
+      buttonElement.textContent = "Комментарий загружается...";
       // posts.push({
       //   name: nameInputElement.value.replaceAll("<", "&lt;").replaceAll(">", "&gt;"),
       //   date: new Date(),
@@ -173,8 +182,10 @@
         }),
       }).then(() => {
         fetchPromise();
-        renderComments();
-      });
+      }).then (() => {
+        buttonElement.disabled = false;
+        buttonElement.textContent = "Написать";
+      })
     });
 
     fetchPromise();
