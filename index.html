@@ -46,12 +46,16 @@
     let posts = [];
 
     const fetchPromise = () => {
+      const loadingIndicator = document.getElementById("loading-indicator");
       loadingIndicator.style.display = "block";
-    }
+
       fetch("https://wedev-api.sky.pro/api/v1/dima-burov/comments", {
         method: "GET",
-      }).then((response) => {
-        response.json().then((responseData) => {
+      })
+      .then((response) => {
+        return response.json();
+      })
+      .then((responseData) => {
           loadingIndicator.style.display = "none";
           console.log(responseData);
 
@@ -78,7 +82,7 @@
 
           renderComments();
         });
-      });
+    };
 
     const initEventListeners = () => {
       const buttonElements = document.querySelectorAll(".like-button");
