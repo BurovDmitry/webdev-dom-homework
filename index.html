@@ -52,10 +52,10 @@
       fetch("https://wedev-api.sky.pro/api/v1/dima-burov/comments", {
         method: "GET",
       })
-      .then((response) => {
-        return response.json();
-      })
-      .then((responseData) => {
+        .then((response) => {
+          return response.json();
+        })
+        .then((responseData) => {
           loadingIndicator.style.display = "none";
           console.log(responseData);
 
@@ -156,18 +156,22 @@
       nameInputElement.classList.remove("color-error");
       textInputElement.classList.remove("color-error");
 
-      if (nameInputElement.value === "") {
+      const name = nameInputElement.value;
+      const comment = textInputElement.value;
+
+      if (name.length < 3) {
         nameInputElement.classList.add("color-error");
         return;
       }
 
-      if (textInputElement.value === "") {
+      if (comment.length < 3) {
         textInputElement.classList.add("color-error");
         return;
       }
 
       buttonElement.disabled = true;
       buttonElement.textContent = "Комментарий загружается...";
+
       // posts.push({
       //   name: nameInputElement.value.replaceAll("<", "&lt;").replaceAll(">", "&gt;"),
       //   date: new Date(),
@@ -183,13 +187,29 @@
         body: JSON.stringify({
           name: nameInputElement.value,
           text: textInputElement.value,
+          forceError: true
         }),
-      }).then(() => {
-        fetchPromise();
-      }).then (() => {
-        buttonElement.disabled = false;
-        buttonElement.textContent = "Написать";
       })
+        .then((response) => {
+          if (response.status === 201) {
+            return response.json();
+          } else {
+            throw new Error("Сервер упал");
+          }
+        })
+        .then(() => {
+          fetchPromise();
+        })
+        .then(() => {
+          buttonElement.disabled = false;
+          buttonElement.textContent = "Написать";
+        })
+        .catch((error) => {
+          buttonElement.disabled = false;
+          buttonElement.textContent = "Написать";
+          alert("Кажется что-то пошло не так, попробуй позже");
+          console.warn(error);
+        });
     });
 
     fetchPromise();
