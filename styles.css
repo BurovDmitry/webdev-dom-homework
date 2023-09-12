@@ -140,3 +140,6 @@ body {
   .color-error{
     background-color: #f29e9e;;
   }
+  .load-ind{
+    display: none;
+  }
