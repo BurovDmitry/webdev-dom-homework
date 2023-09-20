@@ -53,7 +53,7 @@ export function generateCommentsPage(posts, user) {
       <div class="add-form-row">
         <button class="add-form-button" id="add-button">Написать</button>
       </div>
-    </div><a>Что бы добавить комментарий<a><a id="link-to-link"><u>Авторизуйтесь</u></a>
+    </div><a id="link-to-link"><u>Что бы добавить комментарий, авторизуйтесь</u></a>
   </div>`;
 }
 

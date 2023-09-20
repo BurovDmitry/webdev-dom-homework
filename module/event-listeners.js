@@ -57,7 +57,6 @@ export function initFormEventListener(
       return;
     }
 
-    nameInputElement.value = "";
     textInputElement.value = "";
 
     buttonElement.disabled = true;
