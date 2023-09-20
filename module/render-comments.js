@@ -10,13 +10,25 @@ import { renderSignIn } from "./render-sign-in.js";
 export const renderComments = () => {
   const appElement = document.getElementById("app");
   let posts = [];
-
-  appElement.innerHTML = generateCommentsPage(posts, user);
+  
+  appElement.innerHTML = generateCommentsPage(user);
   const listElement = document.getElementById("list");
   const buttonElement = document.getElementById("add-button");
   const nameInputElement = document.getElementById("name-input");
   const textInputElement = document.getElementById("text-input");
   const loadingIndicator = document.getElementById("loading-indicator");
+
+  fetchPromise();
+  if (user) {
+    appElement.classList.add("authorized");
+    initFormEventListener(
+      buttonElement,
+      nameInputElement,
+      textInputElement,
+      fetchPromise
+    );
+  }
+  checkIfAuthorized(user);
 
   function fetchPromise() {
     show(loadingIndicator);
@@ -30,18 +42,6 @@ export const renderComments = () => {
       })
       .finally(() => hide(loadingIndicator));
   }
-
-  fetchPromise();
-  if (user) {
-    appElement.classList.add("authorized");
-    initFormEventListener(
-      buttonElement,
-      nameInputElement,
-      textInputElement,
-      fetchPromise
-    );
-  }
-  checkIfAuthorized(user);
 };
 
 function checkIfAuthorized(user) {

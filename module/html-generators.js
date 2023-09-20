@@ -26,14 +26,13 @@ export function generatePosts(posts) {
     .join("");
 }
 
-export function generateCommentsPage(posts, user) {
+export function generateCommentsPage(user) {
   return `
   <div class="container">
     <div class="load-ind" id="loading-indicator">
       <h1>Данные загружаются...</h1>
     </div>
     <ul class="comments" id="list">
-    ${generatePosts(posts)}
     </ul>
     <div id="add-form">
       <input

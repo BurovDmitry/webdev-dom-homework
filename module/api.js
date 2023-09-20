@@ -68,7 +68,10 @@ export function signUp({ login, name, password }) {
       password,
     }),
   }).then((response) => {
-    console.log('r',response)
+    if (response.status === 400) {
+      throw new Error("Введенный логин уже занят!");
+    }
+
     if (!response.ok) {
       throw new Error("Ошибка сети или сервера");
     }

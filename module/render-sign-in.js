@@ -21,7 +21,7 @@ export const renderSignIn = (renderComments) => {
       .then(() => {
         renderComments();
       })
-      .catch(() => alert("Логин и/или пароль неверные!"));
+      .catch((err) => alert(err));
   });
 
   signUpLink.addEventListener("click", () => {

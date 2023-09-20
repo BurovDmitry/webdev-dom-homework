@@ -22,7 +22,8 @@ export const renderSignUp = (renderComments) => {
       })
       .then(() => {
         renderComments();
-      });
+      })
+      .catch((err) => alert(err.message));
   });
 
   signInLink.addEventListener("click", () => {
