@@ -1,4 +1,4 @@
-import { renderComments } from "./module/render-comments.js";
+import { renderComments } from './module/render-comments.js'
 
-renderComments();
-console.log("It works!");
+renderComments()
+console.log('It works!')

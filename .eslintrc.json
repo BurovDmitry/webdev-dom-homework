@@ -1,0 +1,17 @@
+{
+    "env":{
+        "browser": true,
+        "es6": true,
+        "node": true
+    },
+    "extends": ["eslint:recommend", "prettier"],
+    "plagins": ["prettier"],
+    "parserOptions": {
+        "ecmaVersion": 2023
+    },
+    "rules":{
+        "prettier/prettier": "error",
+        "camelcase": ["error"],
+        "eqeqeq": ["error", "always"]
+    }
+}

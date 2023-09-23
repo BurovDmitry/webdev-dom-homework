@@ -1,9 +1,9 @@
 export function generatePosts(posts) {
-  return posts
-    .map((comment, index) => {
-      return `<li class="comment" data-comment="${comment.text}" data-name="${
-        comment.name
-      }">
+    return posts
+        .map((comment, index) => {
+            return `<li class="comment" data-comment="${
+                comment.text
+            }" data-name="${comment.name}">
           <div class="comment-header">
             <div>${comment.name}</div>
             <div>${comment.date}</div>
@@ -17,17 +17,17 @@ export function generatePosts(posts) {
             <div class="likes">
               <span class="likes-counter">${comment.like}</span>
               <button class="like-button ${
-                comment.isLiked ? "-active-like" : ""
+                  comment.isLiked ? '-active-like' : ''
               }" data-index="${index}"></button>
             </div>
           </div>
-        </li>`;
-    })
-    .join("");
+        </li>`
+        })
+        .join('')
 }
 
 export function generateCommentsPage(user) {
-  return `
+    return `
   <div class="container">
     <div class="load-ind" id="loading-indicator">
       <h1>Данные загружаются...</h1>
@@ -53,11 +53,11 @@ export function generateCommentsPage(user) {
         <button class="add-form-button" id="add-button">Написать</button>
       </div>
     </div><a id="link-to-link"><u>Что бы добавить комментарий, авторизуйтесь</u></a>
-  </div>`;
+  </div>`
 }
 
 export function generateSignInPage() {
-  return `<div class="container">
+    return `<div class="container">
   <div class="universal-form">
   <h3>Форма входа</h3>
       <div class="form-input">
@@ -72,11 +72,11 @@ export function generateSignInPage() {
       <button class="button-login" id="login-button">Войти</button>
       <button class="button-login" id="link-to-sign-up">Зарегистрироваться</button>
     </div>
-  </div>`;
+  </div>`
 }
 
 export function generateSignUpPage() {
-  return `<div class="container">
+    return `<div class="container">
   <div class="universal-form">
       <h3 class="form-title">Форма регистрации</h3>
       <div class="form-input">
@@ -93,5 +93,5 @@ export function generateSignUpPage() {
       <button class="button-login" id="sign-up-button">Зарегистрироваться</button>
       <button class="button-login" id="link-to-sign-in">Войти</button>
     </div>
-    </div>`;
+    </div>`
 }
